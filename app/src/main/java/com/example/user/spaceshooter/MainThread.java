@@ -1,7 +1,7 @@
 package com.example.user.spaceshooter;
 
+import android.content.Context;
 import android.graphics.Canvas;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 
 /**
@@ -15,6 +15,8 @@ public class MainThread extends Thread{
     private SurfaceHolder holder;
     private GamePanel panel;
     private boolean running;
+    private MainMenu menu;
+    private Surface surface;
 
     public static Canvas canvas;
 
@@ -22,10 +24,19 @@ public class MainThread extends Thread{
         this.running = running;
     }
 
-    public MainThread(SurfaceHolder holder, GamePanel panel){
+    public MainThread(SurfaceHolder holder, Surface surface, Context ctx){
         super();
         this.holder = holder;
+        this.surface = surface;
+        menu = new MainMenu(ctx);
+    }
+
+    public void setGamePanel(GamePanel panel){
         this.panel = panel;
+    }
+
+    public MainMenu getMenu(){
+        return menu;
     }
 
     @Override
@@ -44,8 +55,14 @@ public class MainThread extends Thread{
             try{
               canvas = this.holder.lockCanvas();
                 synchronized (holder){
-                    this.panel.update(canvas.getWidth(), canvas.getHeight());
-                    this.panel.draw(canvas);
+                    if(panel != null) {
+                        panel.update(canvas.getWidth(), canvas.getHeight());
+                        panel.draw(canvas);
+                    }
+                    if(!menu.isDispose()){
+                        menu.draw(canvas);
+                        menu.update();
+                    }
                 }
             }catch (Exception e){
                 e.printStackTrace();

@@ -6,8 +6,12 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -25,8 +29,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(new GamePanel(this));
+        setContentView(new Surface(this));
 
+        //Code for Gyroscope
         sm = (SensorManager) getSystemService(SENSOR_SERVICE);
         gs = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
@@ -37,15 +42,12 @@ public class MainActivity extends Activity {
         eventListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent e) {
-                if(e.values[0] < -0.5f){//up
+                if(e.values[0] < -0.5f)//up
                     py -= 1;
-                }
-                if(e.values[1] > 0.5f){//right
+                if(e.values[1] > 0.5f)//right
                     px += 2;
-                }
-                if(e.values[1] < -0.5f){//left
+                if(e.values[1] < -0.5f)//left
                     px -= 2;
-                }
             }
 
             @Override

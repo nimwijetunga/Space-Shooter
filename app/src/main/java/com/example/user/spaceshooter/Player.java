@@ -25,6 +25,7 @@ public class Player extends Entity{
         super(rect, level,ctx);
         sfx = new Sound(ctx);
         lasers = new ArrayList<Laser>();
+        sfx.playSound("game");
     }
 
     public boolean isDead(){
@@ -63,7 +64,7 @@ public class Player extends Entity{
         ArrayList<Obstacle> obs = level.getObs();
         for(int i = 0; i < obs.size(); i++){
             if(this.collidesWith(obs.get(i))){
-                sfx.expSound();
+                sfx.playSound(sfx.getExplosion());
                 lives--;
                 obs.remove(i);
             }
@@ -86,7 +87,7 @@ public class Player extends Entity{
     public void fireLaser(){
         if(ammo > 0 && canFire){
             lasers.add(new Laser(new Rect(rect.left, rect.top + 10, rect.right, rect.bottom + 10), ctx, level));
-            sfx.laserSound();
+            sfx.playSound(sfx.getLaser());
             ammo--;
             canFire = false;
             fireTimer = System.nanoTime();
@@ -111,7 +112,7 @@ public class Player extends Entity{
         for(int i = 0; i < lasers.size(); i++){
             if(lasers.get(i).shouldRemove()) {
                 score += 3;
-                sfx.expSound();
+                sfx.playSound(sfx.getExplosion());
                 lasers.remove(i);
             }
         }

@@ -3,6 +3,7 @@ package com.example.user.spaceshooter;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -11,14 +12,16 @@ import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 /**
  * Created by User on 2017-07-01.
  */
 
-public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
+public class GamePanel{
 
-    private MainThread thread;
     private Player player;
     private Point playerPoint;
     private Level level;
@@ -28,44 +31,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private Context ctxT;
 
     public GamePanel(Context ctx){
-        super(ctx);
-
         ctxT = ctx;
-
-        getHolder().addCallback(this);
-
-        thread = new MainThread(getHolder(), this);
 
         level = new Level(ctx, 500, numObs, 1000);
 
         player = new Player(new Rect(100,100,200,200), level, ctx);
         playerPoint = new Point(MainActivity.px,MainActivity.py);
-        setFocusable(true);
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        thread = new MainThread(getHolder(), this);
-        thread.setRunning(true);
-        thread.start();
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        //does nothing
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        boolean retry = true;
-
-        while(retry){
-            try{
-                thread.setRunning(false);
-                thread.join();
-            }catch(Exception e){e.printStackTrace();}
-            retry = false;
-        }
     }
 
     public void reset(int width, int height){
@@ -106,19 +77,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
        }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent e){
-        switch(e.getAction()){
-            case MotionEvent.ACTION_DOWN:
-            case MotionEvent.ACTION_MOVE:
-            case MotionEvent.ACTION_UP:
-                player.fireLaser();
-        }
-        return true;
+    public void fireLaser(){
+        if(Surface.touch)
+            player.fireLaser();
+        Surface.touch = false;
     }
 
     public void update(int width, int height){
         playerPoint.set(MainActivity.px, MainActivity.py);
+        fireLaser();
         player.update(playerPoint);
         player.hitObs();
         if(player.isDead())
@@ -134,12 +101,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             movedDown = false;
     }
 
-    @Override
     public void draw(Canvas c){
-        super.draw(c);
 
         //Background Image
-        Drawable d = getResources().getDrawable(R.drawable.space);
+        Drawable d = ctxT.getResources().getDrawable(R.drawable.space);
         d.setBounds(0, 0, c.getWidth(), c.getHeight());
         d.draw(c);
 
