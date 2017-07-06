@@ -14,17 +14,20 @@ import java.util.ArrayList;
 
 public class Player extends Entity{
 
-    private int lives = 3, ammo = 5, score = 0, highScore = 0;
+    private int lives = 3, ammo = 5, score = 0;
+    private int highScore = 0, index = 0;
     private boolean dead = false;
     private long deadTimer, fireTimer;
     private ArrayList<Laser> lasers;
     private boolean canFire = true;
     private Sound sfx;
+    private HighScore hs;
 
     public Player(Rect rect, Level level, Context ctx){
         super(rect, level,ctx);
         sfx = new Sound(ctx);
         lasers = new ArrayList<Laser>();
+        hs = new HighScore(ctx);
         sfx.playSound("game");
     }
 
@@ -58,8 +61,6 @@ public class Player extends Entity{
 
     public int getScore(){return score;}
 
-    public void setScore(int score){this.score = score;}
-
     public void hitObs(){
         ArrayList<Obstacle> obs = level.getObs();
         for(int i = 0; i < obs.size(); i++){
@@ -78,8 +79,12 @@ public class Player extends Entity{
             deadTimer = System.nanoTime();
             lives = 3;
             ammo = 5;
-            if(score > highScore)
+            String [] name = {"Bob", "Jones", "Billion", "Kred", "Lodu", "Priash"};
+            if(highScore == highScore) {
                 highScore = score;
+                hs.addScore(name[index] , highScore);
+                index++;
+            }
             score = 0;
         }
     }

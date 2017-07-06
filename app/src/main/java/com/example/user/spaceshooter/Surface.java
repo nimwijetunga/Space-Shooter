@@ -16,16 +16,11 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
     private MainThread thread;
     private Context ctx;
 
-
     public Surface(Context ctx){
         super(ctx);
-
         this.ctx = ctx;
-
         getHolder().addCallback(this);
-
         setFocusable(true);
-
     }
 
     public Thread getThread(){
@@ -41,7 +36,7 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
             thread.setGamePanel(new GamePanel(ctx));
             thread.getMenu().setDispose(true);
         }
-        if(thread.getMenu().getExit()){
+        if(thread.getMenu().getExit()) {
             System.exit(0);
         }
         //Game Touch Inputs
