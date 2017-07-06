@@ -2,6 +2,7 @@ package com.example.user.spaceshooter;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -15,20 +16,21 @@ import java.util.ArrayList;
 public class Player extends Entity{
 
     private int lives = 3, ammo = 5, score = 0;
-    private int highScore = 0, index = 0;
+    private int highScore = 0;
     private boolean dead = false;
     private long deadTimer, fireTimer;
     private ArrayList<Laser> lasers;
     private boolean canFire = true;
-    private Sound sfx;
-    private HighScore hs;
+    private Button menu;
+    private int cw, ch;
 
-    public Player(Rect rect, Level level, Context ctx){
+    public Player(Rect rect, Level level, Context ctx, int cw, int ch){
         super(rect, level,ctx);
-        sfx = new Sound(ctx);
+        this.cw = cw;
+        this.ch = ch;
         lasers = new ArrayList<Laser>();
-        hs = new HighScore(ctx);
-        sfx.playSound("game");
+        MainThread.sfx.playSound("game");
+        menu = new Button(ctx, new Rect(cw / 4, 125, cw / 4 + 600, 225), "Main Menu", Color.RED);
     }
 
     public boolean isDead(){
@@ -45,6 +47,9 @@ public class Player extends Entity{
         Drawable d = ctx.getResources().getDrawable(R.drawable.space_ship);
         d.setBounds(rect.left, rect.top, rect.right, rect.bottom);
         d.draw(c);
+
+        //Buttons
+        menu.drawButton(c);
     }
 
     public ArrayList<Laser> getLasers(){
@@ -65,8 +70,9 @@ public class Player extends Entity{
         ArrayList<Obstacle> obs = level.getObs();
         for(int i = 0; i < obs.size(); i++){
             if(this.collidesWith(obs.get(i))){
-                sfx.playSound(sfx.getExplosion());
+                MainThread.sfx.playSound(MainThread.sfx.getExplosion());
                 lives--;
+                restart();
                 obs.remove(i);
             }
         }
@@ -79,11 +85,9 @@ public class Player extends Entity{
             deadTimer = System.nanoTime();
             lives = 3;
             ammo = 5;
-            String [] name = {"Bob", "Jones", "Billion", "Kred", "Lodu", "Priash"};
-            if(highScore == highScore) {
+            if(score > highScore) {
                 highScore = score;
-                hs.addScore(name[index] , highScore);
-                index++;
+                MainMenu.getHighScore().addScore("AAA" , highScore);
             }
             score = 0;
         }
@@ -92,7 +96,7 @@ public class Player extends Entity{
     public void fireLaser(){
         if(ammo > 0 && canFire){
             lasers.add(new Laser(new Rect(rect.left, rect.top + 10, rect.right, rect.bottom + 10), ctx, level));
-            sfx.playSound(sfx.getLaser());
+            MainThread.sfx.playSound(MainThread.sfx.getLaser());
             ammo--;
             canFire = false;
             fireTimer = System.nanoTime();
@@ -101,7 +105,6 @@ public class Player extends Entity{
 
     public void update(Point p){
         rect.set(p.x - rect.width()/2, p.y - rect.height()/2, p.x + rect.width()/2, p.y + rect.height()/2);
-        restart();
 
         //Respawn Timer
         long elapsed = (System.nanoTime() - deadTimer) / 1000000;
@@ -117,9 +120,17 @@ public class Player extends Entity{
         for(int i = 0; i < lasers.size(); i++){
             if(lasers.get(i).shouldRemove()) {
                 score += 3;
-                sfx.playSound(sfx.getExplosion());
+                MainThread.sfx.playSound(MainThread.sfx.getExplosion());
                 lasers.remove(i);
             }
+        }
+
+        //Button
+        menu.clicked(Surface.x, Surface.y);
+        if(menu.getClicked()){
+            MainMenu.play = false;
+            MainMenu.dispose = false;
+            MainThread.sfx.playSound("Menu");
         }
     }
 }

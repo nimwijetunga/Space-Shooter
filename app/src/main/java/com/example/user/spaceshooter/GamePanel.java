@@ -29,14 +29,19 @@ public class GamePanel{
     private boolean movedDown = false;
     private long moveTimer;
     private Context ctxT;
+    private int width, height;
 
-    public GamePanel(Context ctx){
+    public GamePanel(Context ctx, int width, int height){
         ctxT = ctx;
 
         level = new Level(ctx, 500, numObs, 1000);
 
-        player = new Player(new Rect(100,100,200,200), level, ctx);
+        player = new Player(new Rect(100,100,200,200), level, ctx, width, height);
         playerPoint = new Point(MainActivity.px,MainActivity.py);
+    }
+
+    public Player getPlayer(){
+        return player;
     }
 
     public void reset(int width, int height){

@@ -21,9 +21,9 @@ import java.util.ArrayList;
 public class MainMenu{
 
     private Context ctx;
-    private boolean dispose, play, exit;
+    public static boolean dispose, play, exit, highScore;
     private ArrayList<Button> buttons;
-    Sound sfx;
+    private static HighScore hs;
 
     public MainMenu(Context ctx){
         this.ctx = ctx;
@@ -31,33 +31,27 @@ public class MainMenu{
         exit = false;
         play = false;
         buttons = new ArrayList<Button>();
-        sfx = new Sound(ctx);
-        sfx.playSound("menu");
+        hs = new HighScore(ctx);
+        MainThread.sfx.playSound("menu");
     }
 
-    public void setSfx(Sound sfx){
-       this.sfx = sfx;
+    public static HighScore getHighScore(){
+        return hs;
     }
 
-    public Sound getSfx(){
-        return sfx;
-    }
-
-    public boolean isDispose(){
+    public static boolean isDispose(){
         return dispose;
     }
 
-    public void setDispose(boolean dispose){
-        this.dispose = dispose;
-    }
-
-    public boolean isPlay(){
+    public static boolean isPlay(){
         return play;
     }
 
-    public boolean getExit(){
+    public static boolean getExit(){
         return exit;
     }
+
+    public static boolean isHighScore(){ return highScore; }
 
     private void createButtons(Canvas c){
         int width = (int) (c.getWidth() / 4), height = c.getHeight() / 2;
@@ -73,9 +67,11 @@ public class MainMenu{
             i.clicked(Surface.x, Surface.y);
             if(i.getClicked()){
                 String tmp = i.getText();
-                if(tmp.equals("Play"))
+                if(tmp.equalsIgnoreCase("Play"))
                     play = true;
-                if(tmp.equals("Exit"))
+                if(tmp.equalsIgnoreCase("High Score"))
+                    highScore = true;
+                if(tmp.equalsIgnoreCase("Exit"))
                     exit = true;
             }
         }

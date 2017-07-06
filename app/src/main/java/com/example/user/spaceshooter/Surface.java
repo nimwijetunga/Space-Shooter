@@ -31,14 +31,6 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
     public boolean onTouchEvent(MotionEvent e){
         x = (int) e.getX();
         y = (int) e.getY();
-        //Main Menu Touch Inputs
-        if(thread.getMenu().isPlay() && !thread.getMenu().isDispose()) {
-            thread.setGamePanel(new GamePanel(ctx));
-            thread.getMenu().setDispose(true);
-        }
-        if(thread.getMenu().getExit()) {
-            System.exit(0);
-        }
         //Game Touch Inputs
         switch(e.getAction()){
             case MotionEvent.ACTION_DOWN:

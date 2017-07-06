@@ -16,7 +16,9 @@ public class MainThread extends Thread{
     private GamePanel panel;
     private boolean running;
     private MainMenu menu;
+    private Context ctx;
     private Surface surface;
+    public static Sound sfx;
 
     public static Canvas canvas;
 
@@ -28,6 +30,8 @@ public class MainThread extends Thread{
         super();
         this.holder = holder;
         this.surface = surface;
+        this.ctx = ctx;
+        sfx = new Sound(ctx);
         menu = new MainMenu(ctx);
     }
 
@@ -51,13 +55,17 @@ public class MainThread extends Thread{
         while(running){
             startTime = System.nanoTime();
             canvas = null;
-
             try{
               canvas = this.holder.lockCanvas();
                 synchronized (holder){
-                    if(panel != null) {
+                    updateMenu(ctx);
+                    if(menu.isPlay()) {
                         panel.update(canvas.getWidth(), canvas.getHeight());
                         panel.draw(canvas);
+                    }
+                    if(menu.isHighScore()){
+                        menu.getHighScore().drawScore(canvas);
+                        menu.getHighScore().update();
                     }
                     if(!menu.isDispose()){
                         menu.draw(canvas);
@@ -88,5 +96,17 @@ public class MainThread extends Thread{
                 totalTime = 0;
             }
         }
+    }
+
+    public void updateMenu(Context ctx){
+        //Main Menu Touch Inputs
+        if(menu.isPlay() && !menu.isDispose()) {//Play
+            setGamePanel(new GamePanel(ctx, canvas.getWidth(), canvas.getHeight()));
+            menu.dispose = true;
+        }
+        if(menu.isHighScore())//High Score Menu
+            menu.dispose = true;
+        if(menu.getExit())//Exit
+            System.exit(0);
     }
 }
