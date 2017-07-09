@@ -41,6 +41,8 @@ public class Player extends Entity{
         return lives;
     }
 
+    public void setLives(int lives) { this.lives = lives; }
+
     @Override
     public void draw(Canvas c) {
         //Player Image
@@ -79,10 +81,26 @@ public class Player extends Entity{
         level.setObs(obs);
     }
 
+    public void getItem(){
+        ArrayList<Item> items = level.getItems();
+        for(int i = 0; i < items.size(); i++){
+            int amount = items.get(i).incrStats(this);
+            if(amount != -1) {
+                if (items.get(i).getType() == ItemType.AMMO)
+                    ammo = amount;
+                else if (items.get(i).getType() == ItemType.LIVES)
+                    lives = amount;
+                items.remove(i);
+            }
+        }
+        level.setItems(items);
+    }
+
     public void restart(){
         if(lives == 0){
             dead = true;
             deadTimer = System.nanoTime();
+            lasers.clear();
             lives = 3;
             ammo = 5;
             if(score > highScore) {

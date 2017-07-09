@@ -25,17 +25,14 @@ public class GamePanel{
     private Player player;
     private Point playerPoint;
     private Level level;
-    private int numObs = 15;
+    private int numObs = 15, numItems = 3;
     private boolean movedDown = false;
     private long moveTimer;
     private Context ctxT;
-    private int width, height;
 
     public GamePanel(Context ctx, int width, int height){
+        level = new Level(ctx, 500, numObs, 1000, numItems);
         ctxT = ctx;
-
-        level = new Level(ctx, 500, numObs, 1000);
-
         player = new Player(new Rect(100,100,200,200), level, ctx, width, height);
         playerPoint = new Point(MainActivity.px,MainActivity.py);
     }
@@ -46,7 +43,7 @@ public class GamePanel{
 
     public void reset(int width, int height){
         numObs = 15;
-        level = new Level(ctxT, width, numObs, height);
+        level = new Level(ctxT, width, numObs, height, numItems);
         MainActivity.px = 150;
         MainActivity.py = 150;
         playerPoint = new Point(MainActivity.px,MainActivity.py);
@@ -56,6 +53,7 @@ public class GamePanel{
     public void nextLevel(Canvas c){
         if((player.rect.centerY() + 36) >= c.getHeight()) {
             numObs += 4;
+            numItems++;
             if(numObs >= 50)
                 numObs = 50;//Cap the number of objects
             reset(c.getWidth(), c.getHeight());
@@ -83,7 +81,7 @@ public class GamePanel{
     }
 
     public void fireLaser(){
-        if(Surface.touch)
+        if(Surface.touch && !player.isDead())
             player.fireLaser();
         Surface.touch = false;
     }
@@ -93,6 +91,7 @@ public class GamePanel{
         fireLaser();
         player.update(playerPoint);
         player.hitObs();
+        player.getItem();
         if(player.isDead())
             reset(width, height);
         incrY();
@@ -128,11 +127,14 @@ public class GamePanel{
         paint.setColor(Color.GREEN);
         c.drawText("Score: " + Integer.toString(player.getScore()), 50, c.getHeight() - 100, paint);
 
-
         //Draw Obstacles and Player
         for(Obstacle i : level.getObs())
             i.draw(c);
         player.draw(c);
+
+        //Draw Items
+        for(Item i : level.getItems())
+            i.drawItem(c);
 
         //Draw Laser
         for(Laser i : player.getLasers())
