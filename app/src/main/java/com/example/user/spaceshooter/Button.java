@@ -17,31 +17,42 @@ public class Button {
     private Rect rect;
     private Context ctx;
     private String txt;
-    private boolean clicked;
+    private boolean clicked, clickLen = true;
+    private long clickTimer;
     private int color;
+    private String id;
 
 
-    public Button(Context ctx, Rect rect, String txt, int color){
+    public Button(Context ctx, Rect rect, String txt, int color, String id){
         this.ctx = ctx;
         this.rect = rect;
         this.txt = txt;
         this.color = color;
+        this.id = id;
         clicked = false;
     }
+
+    public String getId(){ return id; }
 
     public boolean getClicked(){
         return clicked;
     }
+
+    public void setClicked(boolean clicked) { this.clicked = clicked; }
 
     public String getText(){
         return txt;
     }
 
     public void clicked(int x, int y){
-        if(rect.contains(x,y))
-            clicked = true;
-        else
-            clicked = false;
+        if(clickLen) {
+            if (rect.contains(x, y))
+                clicked = true;
+            else
+                clicked = false;
+            clickLen = false;
+            clickTimer = System.nanoTime();
+        }
     }
 
     public void drawButton(Canvas c){
@@ -73,5 +84,13 @@ public class Button {
         paint.setColor(Color.YELLOW);
         //Draw Centered Text
         c.drawText(txt, bounds.left, bounds.top - paint.ascent(), paint);
+
+        updateTimer();
+    }
+
+    public void updateTimer(){
+        long elapsed = (System.nanoTime() - clickTimer) / 1000000;
+        if(elapsed > 500)
+            clickLen = true;
     }
 }

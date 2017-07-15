@@ -55,11 +55,11 @@ public class MainMenu{
 
     private void createButtons(Canvas c){
         int width = (int) (c.getWidth() / 4), height = c.getHeight() / 2;
-        buttons.add(new Button(ctx, new Rect(width, height, width + 600, height + 100), "Play", Color.RED));
+        buttons.add(new Button(ctx, new Rect(width, height, width + 600, height + 100), "Play", Color.RED, "Play"));
         height = c.getHeight() / 4;
-        buttons.add(new Button(ctx, new Rect(width, height, width + 600, height + 100), "High Score", Color.RED));
+        buttons.add(new Button(ctx, new Rect(width, height, width + 600, height + 100), "High Score", Color.RED, "HS"));
         height = (int) (c.getHeight() / 1.3);
-        buttons.add(new Button(ctx, new Rect(width, height, width + 600, height + 100), "Exit", Color.RED));
+        buttons.add(new Button(ctx, new Rect(width, height, width + 600, height + 100), "Exit", Color.RED, "Exit"));
     }
 
     public void update(){

@@ -37,7 +37,7 @@ public class HighScore {
     }
 
     public void createButtons(){
-        buttons.add(new Button(ctx, new Rect(50, 50, 300, 150), "Back", Color.RED));
+        buttons.add(new Button(ctx, new Rect(50, 50, 300, 150), "Back", Color.RED, "Back"));
     }
 
     public void addScore(String name, int score){

@@ -17,7 +17,7 @@ public class Player extends Entity{
 
     private int lives = 3, ammo = 5, score = 0;
     private int highScore = 0;
-    private boolean dead = false;
+    private boolean dead = false, un_menu = false;
     private long deadTimer, fireTimer;
     private ArrayList<Laser> lasers;
     private boolean canFire = true;
@@ -30,7 +30,7 @@ public class Player extends Entity{
         this.ch = ch;
         lasers = new ArrayList<Laser>();
         MainThread.sfx.playSound("game");
-        menu = new Button(ctx, new Rect(cw / 4, 125, cw / 4 + 600, 225), "Main Menu", Color.RED);
+        menu = new Button(ctx, new Rect(cw / 4, 125, cw / 4 + 600, 225), "Main Menu", Color.RED, "Main Menu");
     }
 
     public boolean isDead(){
@@ -41,7 +41,9 @@ public class Player extends Entity{
         return lives;
     }
 
-    public void setLives(int lives) { this.lives = lives; }
+    public boolean getUnMenu(){ return un_menu; }
+
+    public void setUnMenu(boolean un_menu){ this.un_menu = un_menu; }
 
     @Override
     public void draw(Canvas c) {
@@ -81,6 +83,10 @@ public class Player extends Entity{
         level.setObs(obs);
     }
 
+    public void addHighScore(String userName){
+        MainMenu.getHighScore().addScore(userName , highScore);
+    }
+
     public void getItem(){
         ArrayList<Item> items = level.getItems();
         for(int i = 0; i < items.size(); i++){
@@ -105,7 +111,7 @@ public class Player extends Entity{
             ammo = 5;
             if(score > highScore) {
                 highScore = score;
-                MainMenu.getHighScore().addScore("AAA" , highScore);
+                un_menu = true;
             }
             score = 0;
         }

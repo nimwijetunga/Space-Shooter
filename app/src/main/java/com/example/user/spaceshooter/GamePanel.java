@@ -29,10 +29,12 @@ public class GamePanel{
     private boolean movedDown = false;
     private long moveTimer;
     private Context ctxT;
+    private UserName un;
 
     public GamePanel(Context ctx, int width, int height){
         level = new Level(ctx, 500, numObs, 1000, numItems);
         ctxT = ctx;
+        un = new UserName(width, height, ctx);
         player = new Player(new Rect(100,100,200,200), level, ctx, width, height);
         playerPoint = new Point(MainActivity.px,MainActivity.py);
     }
@@ -87,15 +89,22 @@ public class GamePanel{
     }
 
     public void update(int width, int height){
-        playerPoint.set(MainActivity.px, MainActivity.py);
-        fireLaser();
-        player.update(playerPoint);
-        player.hitObs();
-        player.getItem();
-        if(player.isDead())
-            reset(width, height);
-        incrY();
-        updateTimers();
+        if(!player.getUnMenu()) {
+            playerPoint.set(MainActivity.px, MainActivity.py);
+            fireLaser();
+            player.update(playerPoint);
+            player.hitObs();
+            player.getItem();
+            if (player.isDead())
+                reset(width, height);
+            incrY();
+            updateTimers();
+        }
+        if(un.isEnter()){
+            player.setUnMenu(false);
+            player.addHighScore(un.getUn());
+            un.setEnter(false);
+        }
     }
 
     public void updateTimers(){
@@ -119,28 +128,32 @@ public class GamePanel{
         paint.setTypeface(type);
         paint.setColor(Color.YELLOW);
         paint.setTextSize(70);
-        c.drawText("Lives: " + Integer.toString(player.getLives()), 50, 100, paint);
-        //Player Ammo Count
-        paint.setColor(Color.RED);
-        c.drawText("Ammo: " + Integer.toString(player.getAmmo()), c.getWidth() - 350, 100, paint);
-        //Player Score
-        paint.setColor(Color.GREEN);
-        c.drawText("Score: " + Integer.toString(player.getScore()), 50, c.getHeight() - 100, paint);
+        if(!player.getUnMenu()) {
+            c.drawText("Lives: " + Integer.toString(player.getLives()), 50, 100, paint);
+            //Player Ammo Count
+            paint.setColor(Color.RED);
+            c.drawText("Ammo: " + Integer.toString(player.getAmmo()), c.getWidth() - 350, 100, paint);
+            //Player Score
+            paint.setColor(Color.GREEN);
+            c.drawText("Score: " + Integer.toString(player.getScore()), 50, c.getHeight() - 100, paint);
 
-        //Draw Obstacles and Player
-        for(Obstacle i : level.getObs())
-            i.draw(c);
-        player.draw(c);
+            //Draw Obstacles and Player
+            for (Obstacle i : level.getObs())
+                i.draw(c);
+            player.draw(c);
 
-        //Draw Items
-        for(Item i : level.getItems())
-            i.drawItem(c);
+            //Draw Items
+            for (Item i : level.getItems())
+                i.drawItem(c);
 
-        //Draw Laser
-        for(Laser i : player.getLasers())
-            i.fire(c);
+            //Draw Laser
+            for (Laser i : player.getLasers())
+                i.fire(c);
 
-        nextLevel(c);
-        checkBounds(c);
+            nextLevel(c);
+            checkBounds(c);
+        }else{
+           un.draw(c);
+        }
     }
 }
