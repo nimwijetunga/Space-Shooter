@@ -1,20 +1,21 @@
-package com.example.user.spaceshooter;
+package com.example.user.spaceshooter.main;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+
+import com.example.user.spaceshooter.levels.Level;
+import com.example.user.spaceshooter.R;
+import com.example.user.spaceshooter.entities.Obstacle;
+import com.example.user.spaceshooter.entities.Player;
+import com.example.user.spaceshooter.items.Item;
+import com.example.user.spaceshooter.items.Laser;
+import com.example.user.spaceshooter.menus.UserName;
 
 /**
  * Created by User on 2017-07-01.
@@ -53,7 +54,7 @@ public class GamePanel{
     }
 
     public void nextLevel(Canvas c){
-        if((player.rect.centerY() + 36) >= c.getHeight()) {
+        if((player.getRect().centerY() + 36) >= c.getHeight()) {
             numObs += 4;
             numItems++;
             if(numObs >= 50)
@@ -132,7 +133,7 @@ public class GamePanel{
             c.drawText("Lives: " + Integer.toString(player.getLives()), 50, 100, paint);
             //Player Ammo Count
             paint.setColor(Color.RED);
-            c.drawText("Ammo: " + Integer.toString(player.getAmmo()), c.getWidth() - 350, 100, paint);
+            c.drawText("Ammo: " + Integer.toString(player.getAmmo()), c.getWidth() - 400, 100, paint);
             //Player Score
             paint.setColor(Color.GREEN);
             c.drawText("Score: " + Integer.toString(player.getScore()), 50, c.getHeight() - 100, paint);

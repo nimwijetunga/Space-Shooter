@@ -1,4 +1,4 @@
-package com.example.user.spaceshooter;
+package com.example.user.spaceshooter.menus;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,11 +7,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 
-import java.lang.reflect.Array;
+import com.example.user.spaceshooter.handlers.Button;
+import com.example.user.spaceshooter.R;
+import com.example.user.spaceshooter.main.MainThread;
+import com.example.user.spaceshooter.main.Surface;
+
 import java.util.ArrayList;
 
 /**
@@ -88,9 +89,9 @@ public class MainMenu{
         Paint paint = new Paint();
         paint.setTypeface(type);
         paint.setColor(Color.YELLOW);
-        paint.setTextSize(70);
+        paint.setTextSize(90);
 
-        c.drawText("Space Shooter", c.getWidth() / 4, 200, paint);
+        c.drawText("Space Shooter", c.getWidth() / 4 - 100, 200, paint);
 
         for(Button i : buttons)
             i.drawButton(c);

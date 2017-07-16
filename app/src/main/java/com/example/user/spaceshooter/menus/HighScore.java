@@ -1,4 +1,4 @@
-package com.example.user.spaceshooter;
+package com.example.user.spaceshooter.menus;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,6 +7,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+
+import com.example.user.spaceshooter.handlers.Button;
+import com.example.user.spaceshooter.R;
+import com.example.user.spaceshooter.main.Surface;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -26,6 +30,9 @@ public class HighScore {
     private Context ctx;
     private int index;
     private ArrayList<Button> buttons;
+    private int width  = -1, height = -1;
+    private boolean canScroll = false;
+    private int max_display = 10;//does not take into account the screen size of device (need to fix later)
 
     public HighScore(Context ctx){
         this.ctx = ctx;
@@ -36,8 +43,13 @@ public class HighScore {
         createButtons();
     }
 
+    public void setWidth(int width){ this.width = width; }
+    public void setHeight(int height) { this.height = height; }
+
     public void createButtons(){
         buttons.add(new Button(ctx, new Rect(50, 50, 300, 150), "Back", Color.RED, "Back"));
+        buttons.add(new Button(ctx, new Rect(50, 250, 150, 350), "↓", Color.RED, "Down"));
+        buttons.add(new Button(ctx, new Rect(200, 250, 300, 350), "↑", Color.RED, "Up"));
     }
 
     public void addScore(String name, int score){
@@ -94,25 +106,52 @@ public class HighScore {
         paint.setColor(Color.YELLOW);
         paint.setTextSize(70);
 
-        int y = 300;
+        //Remove 0 length scores
+        for(int i = 0; i < scores.size(); i++){
+            if(scores.get(i).length() == 0)
+                scores.remove(i);
+        }
+
+        int y = 350;
+        int ti = 1;
 
         for(int i = index; i < scores.size(); i++){
             String line = scores.get(i);
-            if(line.length() != 0)
-                y += 100;
+            y += 100;
             c.drawText(scores.get(i), 100, y , paint);
+            if(ti == max_display)
+                break;
+            ti++;
         }
-
-        System.out.println("Here");
     }
 
     public void update(){
         for(Button i : buttons) {
             i.clicked(Surface.x, Surface.y);
-            if(i.getText().equalsIgnoreCase("Back") && i.getClicked()){
-                MainMenu.highScore = false;
-                MainMenu.dispose = false;
+            if(i.getClicked()) {
+                if (i.getText().equalsIgnoreCase("Back")) {
+                    MainMenu.highScore = false;
+                    MainMenu.dispose = false;
+                }
+                if (i.getId().equalsIgnoreCase("Down"))
+                    moveDown();
+                if (i.getId().equalsIgnoreCase("Up"))
+                    moveUp();
+                Surface.x = -1;
+                Surface. y = -1;
+                i.setClicked(false);
             }
         }
+    }
+
+    public void moveDown(){
+        if(scores.size() - index <= max_display)
+            return;
+        index += max_display;
+    }
+
+    public void moveUp(){
+       if(index >= max_display)
+           index -= max_display;
     }
 }

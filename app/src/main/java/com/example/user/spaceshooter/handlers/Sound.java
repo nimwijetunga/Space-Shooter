@@ -1,9 +1,11 @@
-package com.example.user.spaceshooter;
+package com.example.user.spaceshooter.handlers;
 
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+
+import com.example.user.spaceshooter.R;
 
 /**
  * Created by User on 2017-07-02.

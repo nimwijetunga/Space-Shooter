@@ -1,9 +1,11 @@
-package com.example.user.spaceshooter;
+package com.example.user.spaceshooter.levels;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
+
+import com.example.user.spaceshooter.entities.Obstacle;
+import com.example.user.spaceshooter.items.Item;
+import com.example.user.spaceshooter.items.ItemType;
 
 import java.util.ArrayList;
 import java.util.Random;

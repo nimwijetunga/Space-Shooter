@@ -1,4 +1,4 @@
-package com.example.user.spaceshooter;
+package com.example.user.spaceshooter.handlers;
 
 import android.content.Context;
 import android.graphics.Canvas;

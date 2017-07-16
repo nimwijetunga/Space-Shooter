@@ -1,4 +1,4 @@
-package com.example.user.spaceshooter;
+package com.example.user.spaceshooter.entities;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,13 +7,23 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
+import com.example.user.spaceshooter.handlers.Button;
+import com.example.user.spaceshooter.items.Item;
+import com.example.user.spaceshooter.items.ItemType;
+import com.example.user.spaceshooter.items.Laser;
+import com.example.user.spaceshooter.levels.Level;
+import com.example.user.spaceshooter.R;
+import com.example.user.spaceshooter.menus.MainMenu;
+import com.example.user.spaceshooter.main.MainThread;
+import com.example.user.spaceshooter.main.Surface;
+
 import java.util.ArrayList;
 
 /**
  * Created by User on 2017-07-01.
  */
 
-public class Player extends Entity{
+public class Player extends Entity {
 
     private int lives = 3, ammo = 5, score = 0;
     private int highScore = 0;

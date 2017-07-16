@@ -1,4 +1,4 @@
-package com.example.user.spaceshooter;
+package com.example.user.spaceshooter.menus;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,6 +6,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+
+import com.example.user.spaceshooter.handlers.Button;
+import com.example.user.spaceshooter.main.Surface;
 
 import java.util.ArrayList;
 

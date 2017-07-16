@@ -1,9 +1,10 @@
-package com.example.user.spaceshooter;
+package com.example.user.spaceshooter.entities;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
+
+import com.example.user.spaceshooter.levels.Level;
 
 /**
  * Created by User on 2017-07-01.

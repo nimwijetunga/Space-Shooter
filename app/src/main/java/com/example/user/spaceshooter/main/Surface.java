@@ -1,9 +1,11 @@
-package com.example.user.spaceshooter;
+package com.example.user.spaceshooter.main;
 
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.example.user.spaceshooter.main.MainThread;
 
 /**
  * Created by User on 2017-07-03.

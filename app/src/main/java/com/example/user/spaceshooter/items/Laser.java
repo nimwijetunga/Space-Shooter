@@ -1,12 +1,13 @@
-package com.example.user.spaceshooter;
+package com.example.user.spaceshooter.items;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.constraint.solver.widgets.Rectangle;
+
+import com.example.user.spaceshooter.levels.Level;
+import com.example.user.spaceshooter.R;
+import com.example.user.spaceshooter.entities.Obstacle;
 
 import java.util.ArrayList;
 

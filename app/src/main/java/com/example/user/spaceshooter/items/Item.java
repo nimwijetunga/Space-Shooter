@@ -1,9 +1,12 @@
-package com.example.user.spaceshooter;
+package com.example.user.spaceshooter.items;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+
+import com.example.user.spaceshooter.R;
+import com.example.user.spaceshooter.entities.Player;
 
 import java.util.Random;
 

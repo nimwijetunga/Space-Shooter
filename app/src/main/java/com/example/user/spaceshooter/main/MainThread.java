@@ -1,8 +1,11 @@
-package com.example.user.spaceshooter;
+package com.example.user.spaceshooter.main;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
+
+import com.example.user.spaceshooter.handlers.Sound;
+import com.example.user.spaceshooter.menus.MainMenu;
 
 /**
  * Created by User on 2017-07-01.
@@ -58,6 +61,8 @@ public class MainThread extends Thread{
             try{
               canvas = this.holder.lockCanvas();
                 synchronized (holder){
+                    menu.getHighScore().setHeight(canvas.getHeight());
+                    menu.getHighScore().setWidth(canvas.getWidth());
                     updateMenu(ctx);
                     if(menu.isPlay()) {
                         panel.update(canvas.getWidth(), canvas.getHeight());
