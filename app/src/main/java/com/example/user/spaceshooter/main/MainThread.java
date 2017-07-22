@@ -61,8 +61,6 @@ public class MainThread extends Thread{
             try{
               canvas = this.holder.lockCanvas();
                 synchronized (holder){
-                    menu.getHighScore().setHeight(canvas.getHeight());
-                    menu.getHighScore().setWidth(canvas.getWidth());
                     updateMenu(ctx);
                     if(menu.isPlay()) {
                         panel.update(canvas.getWidth(), canvas.getHeight());

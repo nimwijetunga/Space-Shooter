@@ -30,21 +30,30 @@ public class HighScore {
     private Context ctx;
     private int index;
     private ArrayList<Button> buttons;
-    private int width  = -1, height = -1;
+    private int width, height;
     private boolean canScroll = false;
-    private int max_display = 10;//does not take into account the screen size of device (need to fix later)
+    private int max_display;
 
     public HighScore(Context ctx){
         this.ctx = ctx;
         scores = new ArrayList<String>();
         index = 0;
+        width = Surface.getScreenWidth();
+        height = Surface.getScreenHeight();
         getScores();
         buttons = new ArrayList<Button>();
         createButtons();
+        max_display = setMax_display();
     }
 
-    public void setWidth(int width){ this.width = width; }
-    public void setHeight(int height) { this.height = height; }
+    public int setMax_display(){
+        int disp = 1, start = 350;
+        while(height - 200 > start){
+            start += 100;
+            disp++;
+        }
+        return disp;
+    }
 
     public void createButtons(){
         buttons.add(new Button(ctx, new Rect(50, 50, 300, 150), "Back", Color.RED, "Back"));

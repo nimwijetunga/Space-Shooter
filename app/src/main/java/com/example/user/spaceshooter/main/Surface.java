@@ -1,6 +1,7 @@
 package com.example.user.spaceshooter.main;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -27,6 +28,14 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
 
     public Thread getThread(){
         return thread;
+    }
+
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
     @Override
