@@ -1,6 +1,6 @@
 ### https://youtu.be/gd12Rhdz27A - Game Demo
-Features:
-<br />
+### Features:
+
 Endless Space Shooter
 <br />
 Tilt phone to move spaceship
